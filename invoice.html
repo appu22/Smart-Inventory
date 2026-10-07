@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Invoice - Smart Inventory</title>
+
+    <!-- Bootstrap CSS -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- Custom CSS -->
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body><!-- =========================
+     NAVBAR
+========================== -->
+
+    <nav class="navbar navbar-dark bg-dark">
+
+        <div class="container-fluid">
+
+            <a class="navbar-brand fw-bold" href="index.html">
+                Smart Inventory
+            </a>
+
+            <div class="text-white">
+                🔔 &nbsp; Admin
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================
+     MAIN CONTENT
+========================== -->
+
+    <div class="container py-4">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div>
+
+                <h2 class="fw-bold mb-1">
+                    Create Invoice
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Create a professional invoice for your customer.
+                </p>
+
+            </div>
+
+
+            <a href="index.html" class="btn btn-secondary">
+                ← Dashboard
+            </a>
+
+        </div>
+
+
+        <!-- =========================
+         CUSTOMER INFORMATION
+    ========================== -->
+
+        <div class="card shadow-sm mb-4">
+
+            <div class="card-body p-4">
+
+                <h5 class="fw-bold mb-3">
+                    Customer Information
+                </h5>
+
+
+                <div class="row g-3">
+
+
+                    <!-- Customer Name -->
+
+                    <div class="col-md-6">
+
+                        <label for="customerName" class="form-label">
+                            Customer Name
+                        </label>
+
+                        <input type="text" id="customerName" class="form-control" placeholder="Enter customer name">
+
+                    </div>
+
+
+                    <!-- Phone -->
+
+                    <div class="col-md-6">
+
+                        <label for="customerPhone" class="form-label">
+                            Phone Number
+                        </label>
+
+                        <input type="tel" id="customerPhone" class="form-control" placeholder="Enter phone number">
+
+                    </div>
+
+
+                    <!-- Email -->
+
+                    <div class="col-md-6">
+
+                        <label for="customerEmail" class="form-label">
+                            Email
+                        </label>
+
+                        <input type="email" id="customerEmail" class="form-control" placeholder="Enter email">
+
+                    </div>
+
+
+                    <!-- Address -->
+
+                    <div class="col-md-6">
+
+                        <label for="customerAddress" class="form-label">
+                            Address
+                        </label>
+
+                        <input type="text" id="customerAddress" class="form-control" placeholder="Enter address">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+         PRODUCT INFORMATION
+    ========================== -->
+
+        <div class="card shadow-sm mb-4">
+
+            <div class="card-body p-4">
+
+                <h5 class="fw-bold mb-3">
+                    Product
+                </h5>
+
+
+                <div class="row g-3 align-items-end">
+
+
+                    <!-- Product -->
+
+                    <div class="col-md-6">
+
+                        <label for="invoiceProduct" class="form-label">
+                            Select Product
+                        </label>
+
+                        <select id="invoiceProduct" class="form-select">
+
+                            <option value="">
+                                Select a product
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Quantity -->
+
+                    <div class="col-md-3">
+
+                        <label for="invoiceQuantity" class="form-label">
+                            Quantity
+                        </label>
+
+                        <input type="number" id="invoiceQuantity" class="form-control" min="1" value="1">
+
+                    </div>
+
+
+                    <!-- Add Button -->
+
+                    <div class="col-md-3">
+
+                        <button type="button" id="addInvoiceProduct" class="btn btn-primary w-100">
+                            + Add Product
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+         INVOICE ITEMS
+    ========================== -->
+
+        <div class="card shadow-sm mb-4">
+
+            <div class="card-body p-4">
+
+                <h5 class="fw-bold mb-3">
+                    Invoice Items
+                </h5>
+
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover">
+
+                        <thead class="table-light">
+
+                            <tr>
+
+                                <th>
+                                    Product
+                                </th>
+
+                                <th>
+                                    Price
+                                </th>
+
+                                <th>
+                                    Quantity
+                                </th>
+
+                                <th>
+                                    Total
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="invoiceItems">
+
+                            <!-- Invoice products will appear here -->
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+         INVOICE TOTALS
+    ========================== -->
+
+        <div class="row justify-content-end">
+
+            <div class="col-md-5">
+
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between mb-2">
+
+                            <span>
+                                Subtotal
+                            </span>
+
+                            <strong id="invoiceSubtotal">
+                                ₹0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="d-flex justify-content-between mb-2">
+
+                            <span>
+                                GST (18%)
+                            </span>
+
+                            <strong id="invoiceTax">
+                                ₹0
+                            </strong>
+
+                        </div>
+
+
+                        <hr>
+
+
+                        <div class="d-flex justify-content-between">
+
+                            <span class="fw-bold">
+                                Grand Total
+                            </span>
+
+                            <strong id="invoiceTotal" class="fs-5">
+                                ₹0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+         ACTION BUTTON
+    ========================== -->
+
+        <div class="text-end mt-4">
+
+            <button id="generateInvoice" class="btn btn-success px-4">
+                Generate Invoice
+            </button>
+
+            <button type="button" onclick="downloadInvoicePDF()" class="btn btn-danger px-4 ms-2">
+                Download PDF
+            </button>
+
+
+        </div>
+        <div id="invoicePreview" class="mt-5"></div>
+
+
+    </div>
+
+
+    <!-- Bootstrap JavaScript -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <!-- Custom JavaScript -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
