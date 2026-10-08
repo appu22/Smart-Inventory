@@ -2227,3 +2227,543 @@ if (inventorySearch) {
         });
     });
 }
+
+
+// Step 36.2: Make the Inventory Cards Dynamic
+const inventoryTotalProducts =
+    document.getElementById("inventoryTotalProducts");
+
+const inventoryLowStock =
+    document.getElementById("inventoryLowStock");
+
+const inventoryOutOfStock =
+    document.getElementById("inventoryOutOfStock");
+
+if (
+    inventoryTotalProducts &&
+    inventoryLowStock &&
+    inventoryOutOfStock
+) {
+
+    const products = getProducts();
+
+    const lowStockProducts =
+        products.filter(function (product) {
+            return (
+                product.quantity > 0 &&
+                product.quantity <= product.minimumStock
+            );
+        });
+
+    const outOfStockProducts =
+        products.filter(function (product) {
+            return product.quantity === 0;
+        });
+
+    inventoryTotalProducts.textContent =
+        products.length;
+
+    inventoryLowStock.textContent =
+        lowStockProducts.length;
+
+    inventoryOutOfStock.textContent =
+        outOfStockProducts.length;
+}
+
+// Step 37.3: Save Customers to localStorage
+
+const customerForm = document.getElementById("customerForm");
+
+if (customerForm) {
+
+    customerForm.addEventListener("submit", function (event) {
+
+        event.preventDefault();
+
+        const customerName =
+            document.getElementById("customerName")
+                .value
+                .trim();
+
+        const customerPhone =
+            document.getElementById("customerPhone")
+                .value
+                .trim();
+
+        const customerEmail =
+            document.getElementById("customerEmail")
+                .value
+                .trim();
+
+        const customerAddress =
+            document.getElementById("customerAddress")
+                .value
+                .trim();
+
+        const params =
+            new URLSearchParams(window.location.search);
+
+        const customerId =
+            Number(params.get("id"));
+
+        const customers =
+            JSON.parse(
+                localStorage.getItem("smartInventoryCustomers") || "[]"
+            );
+
+        if (customerId) {
+            // Step 37.11: Actually Update the Customer
+            const customer =
+                customers.find(function (item) {
+                    return item.id === customerId;
+                });
+
+            if (!customer) {
+                alert("Customer not found.");
+                return;
+            }
+
+            customer.name = customerName;
+            customer.phone = customerPhone;
+            customer.email = customerEmail;
+            customer.address = customerAddress;
+
+        } else {
+
+            const customer = {
+                id: Date.now(),
+                name: customerName,
+                phone: customerPhone,
+                email: customerEmail,
+                address: customerAddress
+            };
+
+            customers.push(customer);
+        }
+
+        localStorage.setItem(
+            "smartInventoryCustomers",
+            JSON.stringify(customers)
+        );
+
+        alert("Customer saved successfully!");
+
+        window.location.href = "customers.html";
+    });
+}
+
+// Step 37.4: Display Saved Customers
+
+const customersTableBody =
+    document.getElementById("customersTableBody");
+
+const emptyCustomersMessage =
+    document.getElementById("emptyCustomersMessage");
+
+if (customersTableBody) {
+
+    const customers =
+        JSON.parse(
+            localStorage.getItem("smartInventoryCustomers") || "[]"
+        );
+
+    if (customers.length === 0) {
+
+        emptyCustomersMessage.style.display = "block";
+
+    } else {
+
+        emptyCustomersMessage.style.display = "none";
+
+        customers.forEach(function (customer) {
+
+            const row =
+                document.createElement("tr");
+
+            row.innerHTML = `
+                <td>
+                    <strong>${customer.name}</strong>
+                </td>
+
+                <td>
+                    ${customer.phone || ""}
+                </td>
+
+                <td>
+                    ${customer.email || ""}
+                </td>
+
+                <td>
+                    ${customer.address || ""}
+                </td>
+
+                <td>
+                    <button  class="btn btn-sm btn-outline-primary"  onclick="viewCustomer(${customer.id})">
+                        View
+                    </button>
+
+                </td>
+            `;
+
+            customersTableBody.appendChild(row);
+        });
+    }
+}
+
+// Step 37.5: Customer Search
+
+const customerSearch =
+    document.getElementById("customerSearch");
+
+if (customerSearch) {
+
+    customerSearch.addEventListener("input", function () {
+
+        const searchText =
+            customerSearch.value.toLowerCase().trim();
+
+        const customers =
+            JSON.parse(
+                localStorage.getItem("smartInventoryCustomers") || "[]"
+            );
+
+        const filteredCustomers =
+            customers.filter(function (customer) {
+
+                return (
+                    customer.name
+                        .toLowerCase()
+                        .includes(searchText) ||
+
+                    customer.phone
+                        .toLowerCase()
+                        .includes(searchText) ||
+
+                    customer.email
+                        .toLowerCase()
+                        .includes(searchText)
+                );
+            });
+
+        customersTableBody.innerHTML = "";
+
+        filteredCustomers.forEach(function (customer) {
+
+            const row =
+                document.createElement("tr");
+
+            row.innerHTML = `
+                <td>
+                    <strong>${customer.name}</strong>
+                </td>
+
+                <td>
+                    ${customer.phone || ""}
+                </td>
+
+                <td>
+                    ${customer.email || ""}
+                </td>
+
+                <td>
+                    ${customer.address || ""}
+                </td>
+
+                <td>
+                    <button
+                        class="btn btn-sm btn-outline-primary"
+                    >
+                        View
+                    </button>
+                </td>
+            `;
+
+            customersTableBody.appendChild(row);
+        });
+    });
+}
+
+// Step 37.6 continued: Make View work
+function viewCustomer(customerId) {
+
+    window.location.href =
+        `customer-details.html?id=${customerId}`;
+}
+
+
+// Step 37.7: Display Customer Details
+
+const customerDetails =
+    document.getElementById("customerDetails");
+
+if (customerDetails) {
+
+    const params =
+        new URLSearchParams(window.location.search);
+
+    const customerId =
+        Number(params.get("id"));
+
+    const customers =
+        JSON.parse(
+            localStorage.getItem("smartInventoryCustomers") || "[]"
+        );
+
+    const customer =
+        customers.find(function (item) {
+            return item.id === customerId;
+        });
+
+    if (!customer) {
+
+        customerDetails.innerHTML = `
+            <div class="alert alert-danger">
+                Customer not found.
+            </div>
+        `;
+
+    } else {
+
+        const deleteCustomerButton = document.getElementById("deleteCustomerButton");
+
+        if (deleteCustomerButton) {
+
+            deleteCustomerButton.style.display = "inline-block";
+
+            deleteCustomerButton.addEventListener(
+                "click",
+                function () {
+
+                    const confirmDelete =
+                        confirm(
+                            `Delete customer "${customer.name}"?`
+                        );
+
+                    if (!confirmDelete) return;
+
+                    let customers =
+                        JSON.parse(
+                            localStorage.getItem(
+                                "smartInventoryCustomers"
+                            ) || "[]"
+                        );
+
+                    customers =
+                        customers.filter(function (item) {
+                            return item.id !== customer.id;
+                        });
+
+                    localStorage.setItem(
+                        "smartInventoryCustomers",
+                        JSON.stringify(customers)
+                    );
+
+                    alert("Customer deleted successfully!");
+
+                    window.location.href =
+                        "customers.html";
+                }
+            );
+        }
+        const editCustomerButton =
+            document.getElementById("editCustomerButton");
+
+        if (editCustomerButton) {
+
+            editCustomerButton.style.display = "inline-block";
+
+            editCustomerButton.addEventListener(
+                "click",
+                function () {
+
+                    window.location.href =
+                        `customer-form.html?id=${customer.id}`;
+                }
+            );
+        }
+
+
+        customerDetails.innerHTML = `
+            <div class="card shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <h3 class="fw-bold mb-4">
+                        Customer Details
+                    </h3>
+
+                    <div class="mb-3">
+                        <h6 class="text-muted">
+                            Name
+                        </h6>
+
+                        <p class="fs-5">
+                            ${customer.name}
+                        </p>
+                    </div>
+
+                    <div class="mb-3">
+                        <h6 class="text-muted">
+                            Phone
+                        </h6>
+
+                        <p>
+                            ${customer.phone || "Not provided"}
+                        </p>
+                    </div>
+
+                    <div class="mb-3">
+                        <h6 class="text-muted">
+                            Email
+                        </h6>
+
+                        <p>
+                            ${customer.email || "Not provided"}
+                        </p>
+                    </div>
+
+                    <div class="mb-3">
+                        <h6 class="text-muted">
+                            Address
+                        </h6>
+
+                        <p>
+                            ${customer.address || "Not provided"}
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+        `;
+    }
+}
+
+// Step 37.10: Load Existing Customer Data for Editing
+const customerFormPage =
+    document.getElementById("customerForm");
+
+if (customerFormPage) {
+
+    const params =
+        new URLSearchParams(window.location.search);
+
+    const customerId =
+        Number(params.get("id"));
+
+    if (customerId) {
+
+        const customers =
+            JSON.parse(
+                localStorage.getItem(
+                    "smartInventoryCustomers"
+                ) || "[]"
+            );
+
+        const customer =
+            customers.find(function (item) {
+                return item.id === customerId;
+            });
+
+        if (customer) {
+
+            document.getElementById("customerName").value =
+                customer.name;
+
+            document.getElementById("customerPhone").value =
+                customer.phone || "";
+
+            document.getElementById("customerEmail").value =
+                customer.email || "";
+
+            document.getElementById("customerAddress").value =
+                customer.address || "";
+        }
+    }
+}
+
+// Step 37.12.2: Load Customers into the Dropdown
+const invoiceCustomer =
+    document.getElementById("invoiceCustomer");
+
+if (invoiceCustomer) {
+
+    const customers =
+        JSON.parse(
+            localStorage.getItem(
+                "smartInventoryCustomers"
+            ) || "[]"
+        );
+
+    customers.forEach(function (customer) {
+
+        const option =
+            document.createElement("option");
+
+        option.value = customer.id;
+
+        option.textContent =
+            customer.name;
+
+        invoiceCustomer.appendChild(option);
+    });
+}
+
+// Step 37.12.3: Auto-Fill Customer Details
+if (invoiceCustomer) {
+
+    invoiceCustomer.addEventListener(
+        "change",
+        function () {
+
+            const customerId =
+                Number(invoiceCustomer.value);
+
+            // if (!customerId) {
+            //     return;
+            // }
+
+            // Step 37.12.4: Make Customer Selection Optional
+
+            if (!customerId) {
+
+                document.getElementById("customerName").value = "";
+                document.getElementById("customerPhone").value = "";
+                document.getElementById("customerEmail").value = "";
+                document.getElementById("customerAddress").value = "";
+
+                return;
+            }
+
+
+            const customers =
+                JSON.parse(
+                    localStorage.getItem(
+                        "smartInventoryCustomers"
+                    ) || "[]"
+                );
+
+            const customer =
+                customers.find(function (item) {
+                    return item.id === customerId;
+                });
+
+            if (!customer) {
+                return;
+            }
+
+            document.getElementById("customerName").value =
+                customer.name;
+
+            document.getElementById("customerPhone").value =
+                customer.phone || "";
+
+            document.getElementById("customerEmail").value =
+                customer.email || "";
+
+            document.getElementById("customerAddress").value =
+                customer.address || "";
+        }
+    );
+}
+
