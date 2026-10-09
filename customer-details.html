@@ -36,7 +36,43 @@
         <div id="customerDetails">
             <!-- Customer details will appear here -->
         </div>
-        
+
+        <div class="card shadow-sm mt-4">
+            <div class="card-body p-4">
+
+                <h4 class="fw-bold mb-3">Invoice History</h4>
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Invoice Number</th>
+                                <th>Date</th>
+                                <th>Total Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="customerInvoiceHistory">
+                            <tr>
+                                <td colspan="4" class="text-center text-muted">
+                                    Loading invoices...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- // Step 37.13.4: Handle customers with no invoices -->
+                <div id="noCustomerInvoices" class="alert alert-info text-center" style="display: none;">
+                    <strong>No invoices yet.</strong>
+                    <p class="mb-0">
+                        Invoices created for this customer will appear here.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
         <!-- Step 37.9: Edit Customer -->
         <button id="editCustomerButton" class="btn btn-primary me-2" style="display: none;">
             Edit Customer
