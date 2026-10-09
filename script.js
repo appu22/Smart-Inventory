@@ -1247,10 +1247,7 @@ function reduceInventoryStock() {
 //Step 24️⃣: Invoice History
 function saveInvoice() {
 
-    const invoices =
-        JSON.parse(
-            localStorage.getItem("smartInventoryInvoices") || "[]"
-        );
+    const invoices = JSON.parse(localStorage.getItem("smartInventoryInvoices") || "[]");
 
     let subtotal = 0;
 
@@ -1269,6 +1266,9 @@ function saveInvoice() {
         id: Date.now(),
 
         invoiceNumber: "INV-" + Date.now(),
+
+        customerId:
+            Number(document.getElementById("invoiceCustomer")?.value) || null,
 
         date: new Date().toISOString(),
 
@@ -2767,3 +2767,71 @@ if (invoiceCustomer) {
     );
 }
 
+// Step 37.13.3: Display the Customer's Invoices
+const customerInvoiceHistory =
+    document.getElementById("customerInvoiceHistory");
+
+if (customerInvoiceHistory) {
+
+    const params =
+        new URLSearchParams(window.location.search);
+
+    const customerId =
+        Number(params.get("id"));
+
+    const invoices =
+        JSON.parse(
+            localStorage.getItem("smartInventoryInvoices") || "[]"
+        );
+
+    const customerInvoices =
+        invoices.filter(function (invoice) {
+            return invoice.customerId === customerId;
+        });
+
+    customerInvoiceHistory.innerHTML = "";
+
+    const noCustomerInvoices =
+        document.getElementById("noCustomerInvoices");
+
+    if (customerInvoices.length === 0) {
+
+        noCustomerInvoices.style.display = "block";
+
+    } else {
+
+        noCustomerInvoices.style.display = "none";
+
+        customerInvoices.reverse().forEach(function (invoice) {
+
+            const row =
+                document.createElement("tr");
+
+            row.innerHTML = `
+                <td>
+                    <strong>${invoice.invoiceNumber}</strong>
+                </td>
+
+                <td>
+                    ${new Date(invoice.date).toLocaleDateString("en-IN")}
+                </td>
+
+                <td>
+                    ₹${invoice.grandTotal.toLocaleString("en-IN", {
+                        minimumFractionDigits: 2
+                    })}
+                </td>
+
+                <td>
+                    <button
+                        class="btn btn-sm btn-outline-primary"
+                        onclick="viewInvoice(${invoice.id})">
+                        View Invoice
+                    </button>
+                </td>
+            `;
+
+            customerInvoiceHistory.appendChild(row);
+        });
+    }
+}
