@@ -2835,3 +2835,45 @@ if (customerInvoiceHistory) {
         });
     }
 }
+
+
+// Step 37.14.2: Calculate Total Invoices and Spending
+
+const customerSummaryInvoices =
+    document.getElementById("customerTotalInvoices");
+
+const customerSummarySpending =
+    document.getElementById("customerTotalSpending");
+
+if (customerSummaryInvoices && customerSummarySpending) {
+
+    const params =
+        new URLSearchParams(window.location.search);
+
+    const customerId =
+        Number(params.get("id"));
+
+    const invoices =
+        JSON.parse(
+            localStorage.getItem("smartInventoryInvoices") || "[]"
+        );
+
+    const customerInvoices =
+        invoices.filter(function (invoice) {
+            return Number(invoice.customerId) === customerId;
+        });
+
+    const totalSpending =
+        customerInvoices.reduce(function (total, invoice) {
+            return total + Number(invoice.grandTotal || 0);
+        }, 0);
+
+    customerSummaryInvoices.textContent =
+        customerInvoices.length;
+
+    customerSummarySpending.textContent =
+        "₹" + totalSpending.toLocaleString("en-IN", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+}
