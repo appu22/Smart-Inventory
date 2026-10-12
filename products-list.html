@@ -18,9 +18,8 @@
 
 </head>
 
-<body><!-- =========================
-     NAVBAR
-========================== -->
+<body>
+    <!-- ========================= NAVBAR  ========================= -->
 
     <nav class="navbar navbar-dark bg-dark">
 
@@ -39,131 +38,178 @@
     </nav>
 
 
-    <!-- =========================
-     MAIN CONTENT
-========================== -->
-
-    <div class="container-fluid p-4">
+    <!-- =========================     MAIN CONTENT ========================== -->
 
 
-        <!-- HEADER -->
+    <!-- Step 38.2.5: Restore Products Sidebar -->
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- MAIN APPLICATION -->
+    <div class="container-fluid">
+        <div class="row">
 
-            <div>
+            <!-- SIDEBAR -->
+            <div class="col-md-2 bg-light min-vh-100 p-3">
 
-                <h2 class="fw-bold mb-1">
-                    Products
-                </h2>
+                <h6 class="text-secondary mb-3">MENU</h6>
 
-                <p class="text-muted mb-0">
-                    Manage your inventory products.
-                </p>
+                <div class="list-group">
 
-            </div>
+                    <a href="index.html" class="list-group-item list-group-item-action">
+                        Dashboard
+                    </a>
 
+                    <a href="products-list.html" class="list-group-item list-group-item-action active">
+                        Products
+                    </a>
 
-            <a href="products.html" class="btn btn-primary">
-                + Add Product
-            </a>
+                    <a href="inventory.html" class="list-group-item list-group-item-action">
+                        Inventory
+                    </a>
 
-        </div>
+                    <a href="invoice-history.html" class="list-group-item list-group-item-action">
+                        Invoices
+                    </a>
 
+                    <a href="customers.html" class="list-group-item list-group-item-action">
+                        Customers
+                    </a>
 
-        <!-- =========================
-         SEARCH
-    ========================== -->
+                    <a href="customer-analytics.html" class="list-group-item list-group-item-action">
+                        Customer Analytics
+                    </a>
 
-        <div class="card shadow-sm mb-4">
-
-            <div class="card-body">
-
-                <label for="searchProduct" class="form-label fw-semibold">
-                    Search Products
-                </label>
-
-                <input type="text" id="searchProduct" class="form-control"
-                    placeholder="Search by product name, SKU or category...">
-
-            </div>
-
-        </div>
-
-
-        <!-- =========================
-         PRODUCT TABLE
-    ========================== -->
-
-        <div class="card shadow-sm">
-
-            <div class="card-body">
-
-                <div class="table-responsive">
-
-                    <table class="table table-hover">
-
-                        <thead class="table-light">
-
-                            <tr>
-
-                                <th>
-                                    Product
-                                </th>
-
-                                <th>
-                                    SKU
-                                </th>
-
-                                <th>
-                                    Category
-                                </th>
-
-                                <th>
-                                    Stock
-                                </th>
-
-                                <th>
-                                    Selling Price
-                                </th>
-
-                                <th>
-                                    Status
-                                </th>
-
-                                <th>
-                                    Actions
-                                </th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody id="productsTableBody">
-
-                            <!-- Products will appear here -->
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-
-                <!-- Empty State -->
-
-                <div id="emptyProductsMessage" class="text-center text-muted py-4">
-
-                    No products found.
+                    <a href="#" class="list-group-item list-group-item-action">
+                        Settings
+                    </a>
 
                 </div>
 
             </div>
 
+            <!-- MAIN CONTENT -->
+            <main class="col-md-10 p-4">
+
+
+
+                <!-- HEADER -->
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+
+                    <div>
+
+                        <h2 class="fw-bold mb-1">
+                            Products
+                        </h2>
+
+                        <p class="text-muted mb-0">
+                            Manage your inventory products.
+                        </p>
+
+                    </div>
+
+
+                    <a href="products.html" class="btn btn-primary">
+                        + Add Product
+                    </a>
+
+                </div>
+
+
+                <!-- =========================   SEARCH    ========================== -->
+
+                <div class="card shadow-sm mb-4">
+
+                    <div class="card-body">
+
+                        <label for="searchProduct" class="form-label fw-semibold">
+                            Search Products
+                        </label>
+
+                        <input type="text" id="searchProduct" class="form-control"
+                            placeholder="Search by product name, SKU or category...">
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================       PRODUCT TABLE    ========================== -->
+
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+
+                            <table class="table table-hover">
+
+                                <thead class="table-light">
+
+                                    <tr>
+
+                                        <th>
+                                            Product
+                                        </th>
+
+                                        <th>
+                                            SKU
+                                        </th>
+
+                                        <th>
+                                            Category
+                                        </th>
+
+                                        <th>
+                                            Stock
+                                        </th>
+
+                                        <th>
+                                            Selling Price
+                                        </th>
+
+                                        <th>
+                                            Status
+                                        </th>
+
+                                        <th>
+                                            Actions
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody id="productsTableBody">
+
+                                    <!-- Products will appear here -->
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+
+                        <!-- Empty State -->
+
+                        <div id="emptyProductsMessage" class="text-center text-muted py-4">
+
+                            No products found.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </main>
+
         </div>
-
-
     </div>
+
+    <!-- Bootstrap JavaScript -->
 
 
     <!-- Bootstrap JavaScript -->

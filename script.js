@@ -2818,8 +2818,8 @@ if (customerInvoiceHistory) {
 
                 <td>
                     ₹${invoice.grandTotal.toLocaleString("en-IN", {
-                        minimumFractionDigits: 2
-                    })}
+                minimumFractionDigits: 2
+            })}
                 </td>
 
                 <td>
@@ -2876,4 +2876,186 @@ if (customerSummaryInvoices && customerSummarySpending) {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         });
+}
+
+
+
+/* Step 38.2.2: Connect Customer Analytics to Real Data */
+
+const analyticsTotalCustomers = document.getElementById("analyticsTotalCustomers");
+const analyticsTotalRevenue = document.getElementById("analyticsTotalRevenue");
+const analyticsTotalInvoices = document.getElementById("analyticsTotalInvoices");
+const analyticsAverageInvoice = document.getElementById("analyticsAverageInvoice");
+
+if (
+    analyticsTotalCustomers &&
+    analyticsTotalRevenue &&
+    analyticsTotalInvoices &&
+    analyticsAverageInvoice
+) {
+    const customers = JSON.parse(
+        localStorage.getItem("smartInventoryCustomers") || "[]"
+    );
+
+    const invoices = JSON.parse(
+        localStorage.getItem("smartInventoryInvoices") || "[]"
+    );
+
+    const totalRevenue = invoices.reduce(function (total, invoice) {
+        return total + Number(invoice.grandTotal || 0);
+    }, 0);
+
+    const totalInvoices = invoices.length;
+
+    const averageInvoiceValue =
+        totalInvoices > 0 ? totalRevenue / totalInvoices : 0;
+
+    analyticsTotalCustomers.textContent = customers.length;
+
+    analyticsTotalRevenue.textContent =
+        "₹" + totalRevenue.toLocaleString("en-IN", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+    analyticsTotalInvoices.textContent = totalInvoices;
+
+    analyticsAverageInvoice.textContent =
+        "₹" + averageInvoiceValue.toLocaleString("en-IN", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+}
+
+
+/* Step 38.3.2: Calculate and Display Top Customers */
+
+
+/* Step 38.4.2: Search and Display Top Customers */
+
+const topCustomersTableBody = document.getElementById("topCustomersTableBody");
+const customerAnalyticsSearch = document.getElementById("customerAnalyticsSearch");
+/* Step 38.5.2: Connect Customer Spending Filter */
+const customerSpendingFilter = document.getElementById("customerSpendingFilter");
+
+if (topCustomersTableBody) {
+    const customers = JSON.parse(
+        localStorage.getItem("smartInventoryCustomers") || "[]"
+    );
+
+    const invoices = JSON.parse(
+        localStorage.getItem("smartInventoryInvoices") || "[]"
+    );
+
+    const customerAnalytics = customers.map(function (customer) {
+        const customerInvoices = invoices.filter(function (invoice) {
+            return Number(invoice.customerId) === Number(customer.id);
+        });
+
+        const totalSpending = customerInvoices.reduce(function (total, invoice) {
+            return total + Number(invoice.grandTotal || 0);
+        }, 0);
+
+        return {
+            id: customer.id,
+            name: customer.name,
+            totalInvoices: customerInvoices.length,
+            totalSpending: totalSpending
+        };
+    });
+
+    customerAnalytics.sort(function (a, b) {
+        return b.totalSpending - a.totalSpending;
+    });
+
+    function displayTopCustomers(searchText = "") {
+
+        const searchValue = searchText.toLowerCase().trim();
+
+        const minimumSpending = customerSpendingFilter
+            ? customerSpendingFilter.value
+            : "all";
+
+        const filteredCustomers = customerAnalytics.filter(function (customer) {
+            const matchesName = String(customer.name || "")
+                .toLowerCase()
+                .includes(searchValue);
+
+            const matchesSpending =
+                minimumSpending === "all" ||
+                customer.totalSpending > Number(minimumSpending);
+
+            return matchesName && matchesSpending;
+        });
+
+
+        topCustomersTableBody.innerHTML = "";
+
+        if (filteredCustomers.length === 0) {
+            topCustomersTableBody.innerHTML = `
+                <tr>
+                    <td colspan="4" class="text-center text-muted">
+                        No matching customers found.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        filteredCustomers.forEach(function (customer, index) {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>
+                    ${customer.name}
+                    ${index === 0 && customer.totalSpending > 0
+                    ? '<span class="badge text-bg-success ms-2">Top Customer</span>'
+                    : ''}
+                </td>
+                <td>${customer.totalInvoices}</td>
+                <td>₹${customer.totalSpending.toLocaleString("en-IN", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })}</td>
+            `;
+
+            topCustomersTableBody.appendChild(row);
+        });
+    }
+
+    displayTopCustomers();
+
+    if (customerAnalyticsSearch) {
+        customerAnalyticsSearch.addEventListener("input", function () {
+            displayTopCustomers(customerAnalyticsSearch.value);
+        });
+    }
+
+    /* Step 38.4.3: Clear Customer Analytics Search */
+
+    const clearCustomerAnalyticsSearch = document.getElementById(
+        "clearCustomerAnalyticsSearch"
+    );
+
+    if (clearCustomerAnalyticsSearch && customerAnalyticsSearch) {
+        clearCustomerAnalyticsSearch.addEventListener("click", function () {
+            customerAnalyticsSearch.value = "";
+            displayTopCustomers();
+            customerAnalyticsSearch.focus();
+        });
+    }
+
+
+    /* Step 38.5.2: Apply Spending Filter */
+
+    if (customerSpendingFilter) {
+        customerSpendingFilter.addEventListener("change", function () {
+            displayTopCustomers(
+                customerAnalyticsSearch ? customerAnalyticsSearch.value : ""
+            );
+        });
+    }
+
+
 }
