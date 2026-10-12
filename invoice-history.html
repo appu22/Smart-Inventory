@@ -35,93 +35,147 @@
 
     <!-- MAIN -->
 
-    <div class="container-fluid p-4">
 
+    <!-- Step 38.2.7: Restore Invoice History Sidebar -->
 
-        <div class="mb-4">
+    <!-- MAIN APPLICATION -->
+    <div class="container-fluid">
+        <div class="row">
 
-            <h2 class="fw-bold">
-                Invoice History
-            </h2>
+            <!-- SIDEBAR -->
+            <div class="col-md-2 bg-light min-vh-100 p-3">
 
-            <p class="text-muted">
-                View your previously generated invoices.
-            </p>
+                <h6 class="text-secondary mb-3">MENU</h6>
 
-        </div>
+                <div class="list-group">
 
+                    <a href="index.html" class="list-group-item list-group-item-action">
+                        Dashboard
+                    </a>
 
-        <!-- INVOICE TABLE  step 27-->
-        <div class="mb-3">
+                    <a href="products-list.html" class="list-group-item list-group-item-action">
+                        Products
+                    </a>
 
-            <input type="text" id="invoiceSearch" class="form-control" placeholder="Search invoice or customer...">
+                    <a href="inventory.html" class="list-group-item list-group-item-action">
+                        Inventory
+                    </a>
 
-        </div>
+                    <a href="invoice-history.html" class="list-group-item list-group-item-action active">
+                        Invoices
+                    </a>
 
-        <div class="card shadow-sm">
+                    <a href="customers.html" class="list-group-item list-group-item-action">
+                        Customers
+                    </a>
 
-            <div class="card-body">
+                    <a href="customer-analytics.html" class="list-group-item list-group-item-action">
+                        Customer Analytics
+                    </a>
 
-                <div class="table-responsive">
-
-                    <table class="table table-hover">
-
-                        <thead class="table-light">
-
-                            <tr>
-
-                                <th>
-                                    Invoice
-                                </th>
-
-                                <th>
-                                    Date
-                                </th>
-
-                                <th>
-                                    Customer
-                                </th>
-
-                                <th>
-                                    Items
-                                </th>
-
-                                <th>
-                                    Total
-                                </th>
-                                <th>
-                                    Actions
-                                </th>
-
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody id="invoiceHistoryTable">
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-
-                <div id="noInvoicesMessage" class="text-center text-muted py-4">
-
-                    No invoices found.
+                    <a href="#" class="list-group-item list-group-item-action">
+                        Settings
+                    </a>
 
                 </div>
 
             </div>
 
-        </div>
+            <!-- MAIN CONTENT -->
+            <main class="col-md-10 p-4">
 
+
+
+                <div class="mb-4">
+
+                    <h2 class="fw-bold">
+                        Invoice History
+                    </h2>
+
+                    <p class="text-muted">
+                        View your previously generated invoices.
+                    </p>
+
+                </div>
+
+
+                <!-- INVOICE TABLE  step 27-->
+                <div class="mb-3">
+
+                    <input type="text" id="invoiceSearch" class="form-control"
+                        placeholder="Search invoice or customer...">
+
+                </div>
+
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+
+                            <table class="table table-hover">
+
+                                <thead class="table-light">
+
+                                    <tr>
+
+                                        <th>
+                                            Invoice
+                                        </th>
+
+                                        <th>
+                                            Date
+                                        </th>
+
+                                        <th>
+                                            Customer
+                                        </th>
+
+                                        <th>
+                                            Items
+                                        </th>
+
+                                        <th>
+                                            Total
+                                        </th>
+                                        <th>
+                                            Actions
+                                        </th>
+
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody id="invoiceHistoryTable">
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+
+                        <div id="noInvoicesMessage" class="text-center text-muted py-4">
+
+                            No invoices found.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </main>
+
+        </div>
     </div>
 
-
+    <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 
     <script src="script.js"></script>
 
