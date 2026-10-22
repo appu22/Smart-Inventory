@@ -31,101 +31,140 @@
     </nav>
 
 
-    <div class="container py-4">
+    <!-- Step 39.2.2: Standard Customer Details Layout -->
+    <div class="container-fluid">
+        <div class="row">
 
-        <div id="customerDetails">
-            <!-- Customer details will appear here -->
-        </div>
+            <!-- Sidebar -->
+            <div class="col-md-2 bg-light min-vh-100 p-3">
+                <h6 class="text-muted fw-bold mb-3">MENU</h6>
 
+                <div class="list-group">
+                    <a href="index.html" class="list-group-item list-group-item-action">
+                        Dashboard
+                    </a>
 
-        <div class="card shadow-sm mt-4">
-            <div class="card-body p-4">
+                    <a href="products-list.html" class="list-group-item list-group-item-action">
+                        Products
+                    </a>
 
-                <h4 class="fw-bold mb-3">Invoice History</h4>
+                    <a href="inventory.html" class="list-group-item list-group-item-action">
+                        Inventory
+                    </a>
 
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Invoice Number</th>
-                                <th>Date</th>
-                                <th>Total Amount</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
+                    <a href="invoice-history.html" class="list-group-item list-group-item-action">
+                        Invoices
+                    </a>
 
-                        <tbody id="customerInvoiceHistory">
-                            <tr>
-                                <td colspan="4" class="text-center text-muted">
-                                    Loading invoices...
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <a href="customers.html" class="list-group-item list-group-item-action active" aria-current="page">
+                        Customers
+                    </a>
+
+                    <a href="customer-analytics.html" class="list-group-item list-group-item-action">
+                        Customer Analytics
+                    </a>
+
+                    <a href="#" class="list-group-item list-group-item-action">
+                        Settings
+                    </a>
                 </div>
-                <!-- // Step 37.13.4: Handle customers with no invoices -->
-                <div id="noCustomerInvoices" class="alert alert-info text-center" style="display: none;">
-                    <strong>No invoices yet.</strong>
-                    <p class="mb-0">
-                        Invoices created for this customer will appear here.
-                    </p>
-                </div>
-
             </div>
-        </div>
 
-        <!-- Step 37.14.1: Add summary cards     -->
-        <!-- CUSTOMER SUMMARY CARDS -->
-        <div class="row g-3 mt-3 mb-4">
+            <!-- Customer Details Content -->
+            <main class="col-md-10 p-4">
+                <div id="customerDetails">
+                    <!-- Customer details will appear here -->
+                </div>
 
-            <!-- Total Invoices -->
-            <div class="col-md-6">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h6 class="text-muted">
-                            Total Invoices
-                        </h6>
 
-                        <h3 id="customerTotalInvoices" class="fw-bold mb-0">
-                            0
-                        </h3>
+                <div class="card shadow-sm mt-4">
+                    <div class="card-body p-4">
+
+                        <h4 class="fw-bold mb-3">Invoice History</h4>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Invoice Number</th>
+                                        <th>Date</th>
+                                        <th>Total Amount</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="customerInvoiceHistory">
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted">
+                                            Loading invoices...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- // Step 37.13.4: Handle customers with no invoices -->
+                        <div id="noCustomerInvoices" class="alert alert-info text-center" style="display: none;">
+                            <strong>No invoices yet.</strong>
+                            <p class="mb-0">
+                                Invoices created for this customer will appear here.
+                            </p>
+                        </div>
+
                     </div>
                 </div>
-            </div>
 
-            <!-- Total Spending -->
-            <div class="col-md-6">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h6 class="text-muted">
-                            Total Spending
-                        </h6>
+                <!-- Step 37.14.1: Add summary cards     -->
+                <!-- CUSTOMER SUMMARY CARDS -->
+                <div class="row g-3 mt-3 mb-4">
 
-                        <h3 id="customerTotalSpending" class="fw-bold mb-0">
-                            ₹0.00
-                        </h3>
+                    <!-- Total Invoices -->
+                    <div class="col-md-6">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h6 class="text-muted">
+                                    Total Invoices
+                                </h6>
+
+                                <h3 id="customerTotalInvoices" class="fw-bold mb-0">
+                                    0
+                                </h3>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- Total Spending -->
+                    <div class="col-md-6">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h6 class="text-muted">
+                                    Total Spending
+                                </h6>
+
+                                <h3 id="customerTotalSpending" class="fw-bold mb-0">
+                                    ₹0.00
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-            </div>
 
-        </div>
+                <!-- Step 37.9: Edit Customer -->
+                <button id="editCustomerButton" class="btn btn-primary me-2" style="display: none;">
+                    Edit Customer
+                </button>
 
-        <!-- Step 37.9: Edit Customer -->
-        <button id="editCustomerButton" class="btn btn-primary me-2" style="display: none;">
-            Edit Customer
-        </button>
+                <div class="mt-3">
 
-        <div class="mt-3">
+                    <button id="deleteCustomerButton" class="btn btn-danger" style="display: none;">
+                        Delete Customer
+                    </button>
 
-            <button id="deleteCustomerButton" class="btn btn-danger" style="display: none;">
-                Delete Customer
-            </button>
+                </div>
 
-        </div>
-
-
-    </div>
-
+            </main>
+        </div> <!-- row -->
+    </div> <!-- container-fluid -->
 
     <script src="script.js"></script>
 
